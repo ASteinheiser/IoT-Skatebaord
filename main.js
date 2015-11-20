@@ -71,8 +71,7 @@ conn.on('ready', function(data){
       if (this.accelerometer.y >= 0.9){
         console.log("------------ Push in progress!! ------------");
 
-        throttledMessage({"action": "push"});
-        throttledMessage({"accel": this.accelerometer.y});
+        throttledMessage({}{"action": "push"},{"accel": this.accelerometer.y}});
       }
     });
   });
