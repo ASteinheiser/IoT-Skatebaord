@@ -60,7 +60,7 @@ conn.on('ready', function(data){
         distance += ((self.options.wheelDiameter)*Math.PI)/1000;
         console.log("total distance: " + Math.round(distance * 100) / 100 + " meters");
 
-        throttledEmit("distance": Math.round(distance * 100) / 100);
+        throttledEmit({"distance": Math.round(distance * 100) / 100});
       }
     });
 
@@ -68,8 +68,8 @@ conn.on('ready', function(data){
       if (this.accelerometer.y >= 0.9){
         console.log("------------ Push in progress!! ------------");
 
-        throttledEmit("action": "push");
-        throttledEmit("accel": this.accelerometer.y);
+        throttledEmit({"action": "push"});
+        throttledEmit({"accel": this.accelerometer.y});
       }
     });
   });
