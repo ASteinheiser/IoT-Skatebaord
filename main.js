@@ -1,5 +1,6 @@
 var meshblu = require('meshblu');
 var meshbluJSON = require('./meshblu.json');
+var EventEmitter = require('events').EventEmitter;
 var five = require("johnny-five");
 var _ = require('lodash');
 
