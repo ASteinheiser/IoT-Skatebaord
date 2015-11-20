@@ -21,12 +21,7 @@ var MESSAGE_SCHEMA = {
 };
 
 var throttledEmit = _.throttle(function(payload){
-  conn.message({
-    "devices": "*",
-    "payload": {
-      payload
-    }
-  });
+  self.emit('message', {"devices": ['*'], "payload": payload});
 }, 500);
 
 conn.on('notReady', function(data){
