@@ -2,10 +2,6 @@ var meshblu = require('meshblu');
 var meshbluJSON = require('./meshblu.json');
 
 var five = require("johnny-five");
-var board = new five.Board({
-  port: "/dev/ttyMFD1"
-});
-
 
 var uuid    = meshbluJSON.uuid;
 var token   = meshbluJSON.token;
@@ -36,6 +32,11 @@ conn.on('ready', function(data){
   conn.update({
     "uuid": uuid,
     "messageSchema": MESSAGE_SCHEMA
+  });
+
+
+  var board = new five.Board({
+    port: "/dev/ttyMFD1"
   });
 
 
