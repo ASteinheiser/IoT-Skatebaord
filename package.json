@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "johnny-five": "^0.9.11",
+    "lodash": "^3.10.1",
     "meshblu": "^1.31.0"
   }
 }
