@@ -1,6 +1,5 @@
 var meshblu = require('meshblu');
 var meshbluJSON = require('./meshblu.json');
-
 var five = require("johnny-five");
 
 var uuid    = meshbluJSON.uuid;
@@ -34,18 +33,15 @@ conn.on('ready', function(data){
     "messageSchema": MESSAGE_SCHEMA
   });
 
-
   var board = new five.Board({
     port: "/dev/ttyMFD1"
   });
-
 
   board.on("ready", function() {
     var imu = new five.IMU({
       controller: "MPU6050"
     });
 
-    //var hallEffect = new five.Sensor.Digital(2);
     var hallEffect = new five.Sensor({
       pin: "12",
       freq: 100,
@@ -57,25 +53,27 @@ conn.on('ready', function(data){
     hallEffect.on("change", function() {
       if (this.value == 0) {
         distance += (70*Math.PI)/1000;
-        console.log("total distance:    " + Math.round(distance * 100) / 100 + " meters");
+        console.log("total distance: " + Math.round(distance * 100) / 100 + " meters");
+        conn.message({
+          "devices": "*",
+          "payload": {
+            "distance": Math.round(distance * 100) / 100
+          }
+        });
       }
     });
 
     imu.on("change", function() {
-
       if (this.accelerometer.y >= 0.9){
         console.log("------------ Push in progress!! ------------");
         conn.message({
-        "devices": "*",
-        "payload": {
-          "action":"push",
-          "accel": this.accelerometer.y
-        }
-      });
+          "devices": "*",
+          "payload": {
+            "action": "push",
+            "accel": this.accelerometer.y
+          }
+        });
       }
-
-
     });
   });
-
 });
