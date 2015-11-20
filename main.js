@@ -1,6 +1,5 @@
 var meshblu = require('meshblu');
 var meshbluJSON = require('./meshblu.json');
-var EventEmitter = require('events').EventEmitter;
 var five = require("johnny-five");
 var _ = require('lodash');
 
@@ -21,9 +20,11 @@ var MESSAGE_SCHEMA = {
   }
 };
 
-var throttledEmit = _.throttle(function(payload){
-  self = this;
-  self.emit('message', {"devices": ['*'], "payload": payload});
+var throttledMessage = _.throttle(function(payload){
+  conn.message({
+    "devices": "*",
+    "payload": payload
+  });
 }, 500);
 
 conn.on('notReady', function(data){
@@ -62,7 +63,7 @@ conn.on('ready', function(data){
         distance += ((self.options.wheelDiameter)*Math.PI)/1000;
         console.log("total distance: " + Math.round(distance * 100) / 100 + " meters");
 
-        throttledEmit({"distance": Math.round(distance * 100) / 100});
+        throttledMessage({"distance": Math.round(distance * 100) / 100});
       }
     });
 
@@ -70,8 +71,8 @@ conn.on('ready', function(data){
       if (this.accelerometer.y >= 0.9){
         console.log("------------ Push in progress!! ------------");
 
-        throttledEmit({"action": "push"});
-        throttledEmit({"accel": this.accelerometer.y});
+        throttledMessage({"action": "push"});
+        throttledMessage({"accel": this.accelerometer.y});
       }
     });
   });
