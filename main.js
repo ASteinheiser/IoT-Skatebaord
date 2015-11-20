@@ -21,6 +21,7 @@ var MESSAGE_SCHEMA = {
 };
 
 var throttledEmit = _.throttle(function(payload){
+  self = this;
   self.emit('message', {"devices": ['*'], "payload": payload});
 }, 500);
 
