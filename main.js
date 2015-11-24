@@ -67,7 +67,9 @@ conn.on('ready', function(data){
     });
 
     imu.on("change", function() {
-      throttledMessage({"accel": this.accelerometer.y});
+      if(this.accelerometer.y > 0){
+        throttledMessage({"accel": this.accelerometer.y});
+      }
     });
   });
 });
