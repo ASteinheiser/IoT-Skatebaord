@@ -20,13 +20,6 @@ var MESSAGE_SCHEMA = {
   }
 };
 
-var throttledMessage = _.throttle(function(payload){
-  conn.message({
-    "devices": "*",
-    "payload": payload
-  });
-}, 500);
-
 conn.on('notReady', function(data){
   console.log('UUID FAILED AUTHENTICATION!');
   console.log(data);
@@ -35,6 +28,13 @@ conn.on('notReady', function(data){
 conn.on('ready', function(data){
   console.log('UUID AUTHENTICATED!');
   console.log(data);
+
+  var throttledMessage = _.throttle(function(payload){
+    conn.message({
+      "devices": "*",
+      "payload": payload
+    });
+  }, 500);
 
   conn.update({
     "uuid": uuid,
