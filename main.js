@@ -50,11 +50,7 @@ conn.on('ready', function(data){
       controller: "MPU6050"
     });
 
-    var hallEffect = new five.Sensor({
-      pin: "12",
-      freq: 100,
-      type: "digital"
-    });
+    var hallEffect = new five.Sensor.Digital(12);
 
     var distance = 0;
 
