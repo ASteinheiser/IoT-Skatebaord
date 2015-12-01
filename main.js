@@ -61,12 +61,15 @@ conn.on('ready', function(data){
     hallEffect.on("change", function() {
       if (this.value == 0) {
         distance += ((self.options.wheelDiameter)*Math.PI)/1000;
+        console.log("total distance: " + distance);
 
         throttledMessage({"distance": Math.round(distance * 100) / 100});
       }
     });
 
     imu.on("change", function() {
+      console.log("accel (y): " + this.accelerometer.y);
+
       throttledMessage({"accel": this.accelerometer.y});
     });
   });
