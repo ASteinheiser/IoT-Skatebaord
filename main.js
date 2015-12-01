@@ -68,8 +68,6 @@ conn.on('ready', function(data){
     });
 
     imu.on("change", function() {
-      console.log("accel (y): " + this.accelerometer.y);
-
       throttledMessage({"accel": this.accelerometer.y});
     });
   });
