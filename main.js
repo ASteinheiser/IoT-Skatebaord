@@ -50,7 +50,7 @@ conn.on('ready', function(data){
       controller: "MPU6050"
     });
 
-    var hallEffect = new five.Pin(13);
+    var hallEffect = new five.Pin(12);
 
     five.Pin.read(hallEffect, function(error, value) {
       console.log(value);
