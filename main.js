@@ -55,13 +55,13 @@ conn.on('ready', function(data){
     var distance = 0;
 
     hallEffect.on("change", function() {
-
-      if (this.value == 0) {
-        distance += ((70)*Math.PI)/1000;
-        console.log("total distance: " + distance);
-
-        throttledMessage({"distance": Math.round(distance * 100) / 100});
-      }
+      console.log(this.value);
+      // if (this.value == 0) {
+      //   distance += ((70)*Math.PI)/1000;
+      //   console.log("total distance: " + distance);
+      //
+      //   throttledMessage({"distance": Math.round(distance * 100) / 100});
+      // }
     });
 
     imu.on("change", function() {
