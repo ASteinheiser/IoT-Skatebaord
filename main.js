@@ -53,7 +53,7 @@ conn.on('ready', function(data){
     var hallEffect = new five.Pin(12);
 
     five.Pin.read(hallEffect, function(error, value) {
-      console.log(value);
+      //console.log(value);
     });
 
     var distance = 0;
@@ -69,6 +69,7 @@ conn.on('ready', function(data){
     // });
 
     imu.on("change", function() {
+      console.log(this.accelerometer.y);
       if(this.accelerometer.y > 0.4){
         throttledMessage({"accel": this.accelerometer.y});
       }
