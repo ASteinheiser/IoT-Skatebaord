@@ -74,7 +74,7 @@ conn.on('ready', function(data){
     imu.on("change", function() {
       var accel = ("\"" + this.accelerometer.y + "\"");
       wstream.write(accel, function(err){
-        netSocket.end();
+        wstream.end();
       });
 
       console.log(this.accelerometer.y);
