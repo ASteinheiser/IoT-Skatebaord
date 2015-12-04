@@ -2,6 +2,7 @@ var meshblu = require('meshblu');
 var meshbluJSON = require('./meshblu.json');
 var five = require("johnny-five");
 var _ = require('lodash');
+var fs = require('fs');
 
 var uuid    = meshbluJSON.uuid;
 var token   = meshbluJSON.token;
@@ -69,6 +70,12 @@ conn.on('ready', function(data){
     // });
 
     imu.on("change", function() {
+      fs.writeFile("/tmp/test", (this.accelerometer.y), function(err) {
+          if(err) {
+              return console.log(err);
+          }
+          console.log("The file was saved!");
+      });
       console.log(this.accelerometer.y);
       if(this.accelerometer.y > 0.4){
         throttledMessage({"accel": this.accelerometer.y});
