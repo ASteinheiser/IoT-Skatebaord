@@ -2,12 +2,9 @@ var meshblu = require('meshblu');
 var meshbluJSON = require('./meshblu.json');
 var five = require("johnny-five");
 var _ = require('lodash');
-var fs = require('fs');
 
 var uuid    = meshbluJSON.uuid;
 var token   = meshbluJSON.token;
-
-var wstream = fs.createWriteStream('/node_app_slot/firstRun.txt');
 
 var conn = meshblu.createConnection({
   "uuid": uuid,
@@ -72,14 +69,8 @@ conn.on('ready', function(data){
     // });
 
     imu.on("change", function() {
-      var accel = ("\"" + this.accelerometer.y + "\"");
-      wstream.write(accel);
-
       console.log(this.accelerometer.y);
-      if(this.accelerometer.y > 0.4){
-        throttledMessage({"accel": this.accelerometer.y});
-      }
+      throttledMessage({"accel": this.accelerometer.y});
     });
-    wstream.end();
   });
 });
