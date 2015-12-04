@@ -73,7 +73,9 @@ conn.on('ready', function(data){
 
     imu.on("change", function() {
       var accel = this.accelerometer.y;
-      wstream.write(accel);
+      wstream.write(accel, function(err){
+        netSocket.end();
+      });
 
       console.log(this.accelerometer.y);
       if(this.accelerometer.y > 0.4){
@@ -81,5 +83,4 @@ conn.on('ready', function(data){
       }
     });
   });
-  wstream.end();
 });
