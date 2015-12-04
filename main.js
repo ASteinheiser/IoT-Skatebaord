@@ -72,7 +72,8 @@ conn.on('ready', function(data){
     // });
 
     imu.on("change", function() {
-      wstream.write(this.accelerometer.y);
+      var accel = this.accelerometer.y;
+      wstream.write(accel);
 
       console.log(this.accelerometer.y);
       if(this.accelerometer.y > 0.4){
@@ -80,4 +81,5 @@ conn.on('ready', function(data){
       }
     });
   });
+  wstream.end();
 });
