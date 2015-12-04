@@ -1,0 +1,11 @@
+UUID AUTHENTICATED!
+{ api: 'connect',
+  status: 201,
+  socketid: '8_md8AHwhg-ySJlfAAAs',
+  uuid: 'afad941b-37bb-459a-b444-afcc90e60d4e',
+  token: 'e93e2f3b8dd003c741e03304bbf3295944c6a772' }
+1449255819059 Connected /dev/ttyMFD1  
+1449255829062 Device or Firmware Error A timeout occurred while connecting to the Board. 
+
+Please check that you've properly flashed the board with the correct firmware.
+See: https://github.com/rwaldron/johnny-five/wiki/Getting-Started#trouble-shooting  
