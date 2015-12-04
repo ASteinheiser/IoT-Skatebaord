@@ -7,6 +7,8 @@ var fs = require('fs');
 var uuid    = meshbluJSON.uuid;
 var token   = meshbluJSON.token;
 
+var wstream = fs.createWriteStream('/node_app_slot/firstRun.txt');
+
 var conn = meshblu.createConnection({
   "uuid": uuid,
   "token": token
@@ -70,12 +72,8 @@ conn.on('ready', function(data){
     // });
 
     imu.on("change", function() {
-      fs.writeFile("/tmp/test", (this.accelerometer.y), function(err) {
-          if(err) {
-              return console.log(err);
-          }
-          console.log("The file was saved!");
-      });
+      wstream.write(this.accelerometer.y);
+
       console.log(this.accelerometer.y);
       if(this.accelerometer.y > 0.4){
         throttledMessage({"accel": this.accelerometer.y});
