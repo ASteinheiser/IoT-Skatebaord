@@ -50,15 +50,15 @@ conn.on('ready', function(data){
       controller: "MPU6050"
     });
 
-    var hallEffect = new five.Pin(12);
+    var reedSwitch = new five.Pin(12);
 
-    five.Pin.read(hallEffect, function(error, value) {
-      //console.log(value);
+    five.Pin.read(reedSwitch, function(error, value) {
+      console.log(value);
     });
 
     var distance = 0;
     //
-    // hallEffect.on("change", function() {
+    // reedSwitch.on("change", function() {
     //   console.log(this.value);
     //   // if (this.value == 0) {
     //   //   distance += ((70)*Math.PI)/1000;
@@ -69,7 +69,6 @@ conn.on('ready', function(data){
     // });
 
     imu.on("change", function() {
-      console.log(this.accelerometer.y);
       throttledMessage({"accel": this.accelerometer.y});
     });
   });
