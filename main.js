@@ -61,7 +61,8 @@ conn.on('ready', function(data){
     var i = 0;
     var dataSize = 5;
     var s = new Stats();
-    var pushThreshold = .3;
+    var posPushThreshold = 0.15;
+    var negPushThreshold = (-0.15);
     //
     // reedSwitch.on("change", function() {
     //   console.log(this.value);
@@ -84,9 +85,9 @@ conn.on('ready', function(data){
         var r = s.range();
         var diff = r[1] - r[0];
 
-        if (diff > pushThreshold){
+        if (r[1] > posPushThreshold && r[0] < negPushThreshold){
           console.log("push!!");
-          throttledMessage({"accel": "push"});
+          throttledMessage({"push": true});
           i = 0;
           s.reset();
         }
