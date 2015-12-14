@@ -30,12 +30,12 @@ conn.on('ready', function(data){
   console.log('UUID AUTHENTICATED!');
   console.log(data);
 
-  var throttledMessage = _.throttle(function(payload){
+  var debouncedMessage = _.debounce(function(payload){
     conn.message({
       "devices": "*",
       "payload": payload
     });
-  }, 500);
+  }, 1000);
 
   conn.update({
     "uuid": uuid,
@@ -58,11 +58,6 @@ conn.on('ready', function(data){
     });
 
     var distance = 0;
-    var i = 0;
-    var dataSize = 5;
-    var s = new Stats();
-    var posPushThreshold = 0.2;
-    var negPushThreshold = (-0.2);
     //
     // reedSwitch.on("change", function() {
     //   console.log(this.value);
@@ -70,9 +65,15 @@ conn.on('ready', function(data){
     //   //   distance += ((70)*Math.PI)/1000;
     //   //   console.log("total distance: " + distance);
     //   //
-    //   //   throttledMessage({"distance": Math.round(distance * 100) / 100});
+    //   //   debouncedMessage({"distance": Math.round(distance * 100) / 100});
     //   // }
     // });
+
+    var i = 0;
+    var dataSize = 5;
+    var s = new Stats();
+    var posPushThreshold = 0.2;
+    var negPushThreshold = (-0.2);
 
     imu.on("change", function() {
       if (i < dataSize) {
@@ -86,8 +87,7 @@ conn.on('ready', function(data){
         var diff = r[1] - r[0];
 
         if (r[1] > posPushThreshold && r[0] < negPushThreshold){
-          console.log("push!!");
-          throttledMessage({"push": true});
+          debouncedMessage({"push": true});
           i = 0;
           s.reset();
         }
