@@ -54,7 +54,7 @@ conn.on('ready', function(data){
     var reedSwitch = new five.Pin(12);
 
     five.Pin.read(reedSwitch, function(error, value) {
-      console.log(value);
+      // console.log(value);
     });
 
     var distance = 0;
