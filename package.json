@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "fast-stats": "0.0.3",
     "johnny-five": "^0.9.11",
     "lodash": "^3.10.1",
     "meshblu": "^1.31.0"
