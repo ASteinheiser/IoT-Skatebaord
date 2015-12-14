@@ -61,6 +61,7 @@ conn.on('ready', function(data){
     var i = 0;
     var dataSize = 5;
     var s = new Stats();
+    var pushThreshold = .4;
     //
     // reedSwitch.on("change", function() {
     //   console.log(this.value);
@@ -80,9 +81,11 @@ conn.on('ready', function(data){
         s.shift();
         s.push(this.accelerometer.y);
         var r = s.range();
-        console.log(r[0] - r[1]);
+        var diff = r[1] - r[0];
+        if (diff > pushThreshold){
+          throttledMessage({"accel": "push"});
+        }
       }
-      throttledMessage({"accel": this.accelerometer.y});
     });
   });
 });
