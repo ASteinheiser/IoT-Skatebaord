@@ -73,13 +73,13 @@ conn.on('ready', function(data){
     // });
 
     imu.on("change", function() {
-      if (i <= dataSize) {
+      if (i < dataSize) {
         s.push(this.accelerometer.y);
         i ++;
       } else {
         s.shift();
         s.push(this.accelerometer.y);
-        console.log(s);
+        console.log(s.range());
       }
       throttledMessage({"accel": this.accelerometer.y});
     });
