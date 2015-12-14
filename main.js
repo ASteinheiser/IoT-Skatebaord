@@ -87,6 +87,7 @@ conn.on('ready', function(data){
         if (diff > pushThreshold){
           console.log("push!!");
           throttledMessage({"accel": "push"});
+          i = 0;
           s.reset();
         }
       }
