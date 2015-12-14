@@ -2,6 +2,7 @@ var meshblu = require('meshblu');
 var meshbluJSON = require('./meshblu.json');
 var five = require("johnny-five");
 var _ = require('lodash');
+var Stats = require('fast-stats').Stats;
 
 var uuid    = meshbluJSON.uuid;
 var token   = meshbluJSON.token;
@@ -57,6 +58,9 @@ conn.on('ready', function(data){
     });
 
     var distance = 0;
+    var i = 0;
+    var dataSize = 5;
+    var s = new Stats();
     //
     // reedSwitch.on("change", function() {
     //   console.log(this.value);
@@ -69,6 +73,14 @@ conn.on('ready', function(data){
     // });
 
     imu.on("change", function() {
+      if (i <= dataSize) {
+        s.push(this.accelerometer.y);
+        i ++;
+      } else {
+        s.shift();
+        s.push(this.accelerometer.y);
+        console.log(s);
+      }
       throttledMessage({"accel": this.accelerometer.y});
     });
   });
