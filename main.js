@@ -79,7 +79,7 @@ conn.on('ready', function(data){
       } else {
         s.shift();
         s.push(this.accelerometer.y);
-        console.log(s.range());
+        console.log(s.range()[0] - s.range()[1]);
       }
       throttledMessage({"accel": this.accelerometer.y});
     });
