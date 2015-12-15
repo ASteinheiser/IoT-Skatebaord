@@ -70,7 +70,7 @@ conn.on('ready', function(data){
     reedSwitch.on("change", function() {
       if (this.value == 1) {
         distance += ((70)*Math.PI)/1000;
-        debouncingMessage({"distance": distance});
+        debouncingMessage({"distance(meters)": distance});
       }
     });
 
