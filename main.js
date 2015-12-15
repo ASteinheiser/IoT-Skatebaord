@@ -72,8 +72,8 @@ conn.on('ready', function(data){
     var i = 0;
     var dataSize = 5;
     var s = new Stats();
-    var posPushThreshold = 0.2;
-    var negPushThreshold = (-0.2);
+    var posPushThreshold = 0.18;
+    var negPushThreshold = (-0.18);
 
     imu.on("change", function() {
       if (i < dataSize) {
