@@ -63,7 +63,7 @@ conn.on('ready', function(data){
     reedSwitch.on("change", function() {
       if (this.value == 1) {
         distance += ((70)*Math.PI)/1000;
-        console.log("Total distance: " + distance);
+        debouncedMessage({"distance": distance});
       }
     });
 
