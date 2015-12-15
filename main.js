@@ -61,7 +61,10 @@ conn.on('ready', function(data){
     });
 
     reedSwitch.on("change", function() {
-      console.log(this.value);
+      if (this.value == 1) {
+        distance += ((70)*Math.PI)/1000;
+        console.log("Total distance: " + distance);
+      }
     });
 
     imu.on("change", function() {
@@ -75,7 +78,7 @@ conn.on('ready', function(data){
         var r = s.range();
         var diff = r[1] - r[0];
 
-        if (r[1] > posPushThreshold && r[0] < negPushThreshold){
+        if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
           debouncedMessage({"push": true});
           i = 0;
           s.reset();
