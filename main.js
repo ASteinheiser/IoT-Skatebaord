@@ -35,7 +35,7 @@ conn.on('ready', function(data){
       "devices": "*",
       "payload": payload
     });
-  }, 1000);
+  }, 750);
 
   conn.update({
     "uuid": uuid,
