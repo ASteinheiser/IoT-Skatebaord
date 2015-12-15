@@ -47,33 +47,22 @@ conn.on('ready', function(data){
   });
 
   board.on("ready", function() {
-    var imu = new five.IMU({
-      controller: "MPU6050"
-    });
-
-    var reedSwitch = new five.Pin(12);
-
-    five.Pin.read(reedSwitch, function(error, value) {
-      // console.log(value);
-    });
-
     var distance = 0;
-    //
-    // reedSwitch.on("change", function() {
-    //   console.log(this.value);
-    //   // if (this.value == 0) {
-    //   //   distance += ((70)*Math.PI)/1000;
-    //   //   console.log("total distance: " + distance);
-    //   //
-    //   //   debouncedMessage({"distance": Math.round(distance * 100) / 100});
-    //   // }
-    // });
-
     var i = 0;
     var dataSize = 5;
     var s = new Stats();
     var posPushThreshold = 0.17;
     var negPushThreshold = (-0.17);
+
+    var reedSwitch = new five.Sensor.Digital(12);
+
+    var imu = new five.IMU({
+      controller: "MPU6050"
+    });
+
+    reedSwitch.on("change", function() {
+      console.log(this.value);
+    });
 
     imu.on("change", function() {
       if (i < dataSize) {
