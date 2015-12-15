@@ -37,6 +37,13 @@ conn.on('ready', function(data){
     });
   }, 750);
 
+  var debouncingMessage = _.debounce(function(payload){
+    conn.message({
+      "devices": "*",
+      "payload": payload
+    });
+  }, 750);
+
   conn.update({
     "uuid": uuid,
     "messageSchema": MESSAGE_SCHEMA
@@ -63,7 +70,7 @@ conn.on('ready', function(data){
     reedSwitch.on("change", function() {
       if (this.value == 1) {
         distance += ((70)*Math.PI)/1000;
-        debouncedMessage({"distance": distance});
+        debouncingMessage({"distance": distance});
       }
     });
 
