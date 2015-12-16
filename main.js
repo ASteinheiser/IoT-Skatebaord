@@ -12,11 +12,17 @@ var conn = meshblu.createConnection({
   "token": token
 });
 
-var MESSAGE_SCHEMA = {
+var OPTIONS_SCHEMA = {
   "type": 'object',
   "properties": {
     "wheelDiameter": {
       "type": "integer"
+    }
+    "pushes": {
+      "type": "boolean"
+    }
+    "distance": {
+      "type": "boolean"
     }
   }
 };
@@ -37,16 +43,14 @@ conn.on('ready', function(data){
     });
   }, 750);
 
-  var debouncingMessage = _.debounce(function(payload){
-    conn.message({
-      "devices": "*",
-      "payload": payload
-    });
-  }, 750);
-
   conn.update({
     "uuid": uuid,
-    "messageSchema": MESSAGE_SCHEMA
+    "optionsSchema": OPTIONS_SCHEMA
+    }
+  });
+
+  conn.on('config', function(error, deviceOptions){
+    conn.update({uuid: data.uuid, options: deviceOptions});
   });
 
   var board = new five.Board({
@@ -67,30 +71,34 @@ conn.on('ready', function(data){
       controller: "MPU6050"
     });
 
-    reedSwitch.on("change", function() {
-      if (this.value == 1) {
-        distance += ((70)*Math.PI)/1000;
-        debouncingMessage({"distance(meters)": distance});
-      }
-    });
-
-    imu.on("change", function() {
-      if (i < dataSize) {
-        s.push(this.accelerometer.y);
-        i ++;
-      } else {
-        s.shift();
-        s.push(this.accelerometer.y);
-
-        var r = s.range();
-        var diff = r[1] - r[0];
-
-        if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
-          debouncedMessage({"push": true});
-          i = 0;
-          s.reset();
+    if (this.options.distance){
+      reedSwitch.on("change", function() {
+        if (this.value == 1) {
+          distance += ((70)*Math.PI)/1000;
+          debouncedMessage({"distance(meters)": distance});
         }
-      }
-    });
+      });
+    }
+
+    if (this.options.pushes){
+      imu.on("change", function() {
+        if (i < dataSize) {
+          s.push(this.accelerometer.y);
+          i ++;
+        } else {
+          s.shift();
+          s.push(this.accelerometer.y);
+
+          var r = s.range();
+          var diff = r[1] - r[0];
+
+          if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
+            debouncedMessage({"push": true});
+            i = 0;
+            s.reset();
+          }
+        }
+      });
+    }
   });
 });
