@@ -46,7 +46,6 @@ conn.on('ready', function(data){
   conn.update({
     "uuid": uuid,
     "optionsSchema": OPTIONS_SCHEMA
-    }
   });
 
   conn.on('config', function(error, deviceOptions){
