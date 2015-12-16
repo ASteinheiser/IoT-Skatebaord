@@ -17,12 +17,6 @@ var OPTIONS_SCHEMA = {
   "properties": {
     "wheelDiameter": {
       "type": "integer"
-    },
-    "pushes": {
-      "type": "boolean"
-    },
-    "distance": {
-      "type": "boolean"
     }
   }
 };
@@ -49,7 +43,6 @@ conn.on('ready', function(data){
   });
 
   conn.on('config', function(error, deviceOptions){
-    // conn.update({uuid: data.uuid, options: deviceOptions});
     setOptions(deviceOptions || {});
   });
 
@@ -69,42 +62,39 @@ conn.on('ready', function(data){
     var s = new Stats();
     var posPushThreshold = 0.17;
     var negPushThreshold = (-0.17);
+    var diameter = options.wheelDiameter;
 
     var reedSwitch = new five.Sensor.Digital(12);
-
     var imu = new five.IMU({
       controller: "MPU6050"
     });
 
-    if (options.distance) {
-      var diameter = options.wheelDiameter;
-      reedSwitch.on("change", function() {
-        if (this.value == 1) {
-          distance += ((diameter * Math.PI) / 1000) * 3.2808; //this gets the distance in mm, converts to m, then to feet
-          debouncedMessage({"distance(meters)": distance});
+    reedSwitch.on("change", function() {
+      if (this.value == 1) {
+        console.log("distance in feet:" + distance);
+        distance += ((diameter * Math.PI) / 1000) * 3.2808; //this gets the distance in mm, converts to m, then to feet
+        debouncedMessage({"distance(meters)": distance});
+      }
+    });
+
+    imu.on("change", function() {
+      if (i < dataSize) {
+        s.push(this.accelerometer.y);
+        i ++;
+      } else {
+        s.shift();
+        s.push(this.accelerometer.y);
+
+        var r = s.range();
+        var diff = r[1] - r[0];
+
+        if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
+          console.log("push detected");
+          debouncedMessage({"push": true});
+          i = 0;
+          s.reset();
         }
-      });
-    }
-
-    if (options.pushes) {
-      imu.on("change", function() {
-        if (i < dataSize) {
-          s.push(this.accelerometer.y);
-          i ++;
-        } else {
-          s.shift();
-          s.push(this.accelerometer.y);
-
-          var r = s.range();
-          var diff = r[1] - r[0];
-
-          if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
-            debouncedMessage({"push": true});
-            i = 0;
-            s.reset();
-          }
-        }
-      });
-    }
+      }
+    });
   });
 });
