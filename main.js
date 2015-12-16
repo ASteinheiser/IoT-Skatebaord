@@ -50,7 +50,7 @@ conn.on('ready', function(data){
 
   conn.on('config', function(error, deviceOptions){
     // conn.update({uuid: data.uuid, options: deviceOptions});
-    setOptions(device.options || {});
+    setOptions(deviceOptions || {});
   });
 
   var setOptions = function (options){
