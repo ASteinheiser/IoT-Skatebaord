@@ -12,15 +12,6 @@ var conn = meshblu.createConnection({
   "token": token
 });
 
-var OPTIONS_SCHEMA = {
-  "type": 'object',
-  "properties": {
-    "wheelDiameter": {
-      "type": "integer"
-    }
-  }
-};
-
 conn.on('notReady', function(data){
   console.log('UUID FAILED AUTHENTICATION!');
   console.log(data);
@@ -62,7 +53,7 @@ conn.on('ready', function(data){
     var s = new Stats();
     var posPushThreshold = 0.17;
     var negPushThreshold = (-0.17);
-    var diameter = options.wheelDiameter;
+    var diameter = 70;
 
     var reedSwitch = new five.Sensor.Digital(12);
     var imu = new five.IMU({
