@@ -65,7 +65,7 @@ conn.on('ready', function(data){
     var self = this;
     var distance = 0;
     var i = 0;
-    var diameter = options.wheelDiameter;
+    var diameter = self.options.wheelDiameter;
     var dataSize = 5;
     var s = new Stats();
     var posPushThreshold = 0.17;
