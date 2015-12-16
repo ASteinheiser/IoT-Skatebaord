@@ -61,7 +61,6 @@ conn.on('ready', function(data){
 
     reedSwitch.on("change", function() {
       if (this.value == 1) {
-        console.log("distance in feet:" + distance);
         distance += ((diameter * Math.PI) / 1000) * 3.2808; //this gets the distance in mm, converts to m, then to feet
         debouncedMessage({"distance(meters)": distance});
       }
@@ -79,7 +78,6 @@ conn.on('ready', function(data){
         var diff = r[1] - r[0];
 
         if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
-          console.log("push detected");
           debouncedMessage({"push": true});
           i = 0;
           s.reset();
