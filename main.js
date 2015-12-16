@@ -17,10 +17,10 @@ var OPTIONS_SCHEMA = {
   "properties": {
     "wheelDiameter": {
       "type": "integer"
-    }
+    },
     "pushes": {
       "type": "boolean"
-    }
+    },
     "distance": {
       "type": "boolean"
     }
