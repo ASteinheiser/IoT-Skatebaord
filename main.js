@@ -76,7 +76,7 @@ conn.on('ready', function(data){
       controller: "MPU6050"
     });
 
-    if (self.options.distance){
+    if (options.distance) {
       reedSwitch.on("change", function() {
         if (this.value == 1) {
           distance += ((70)*Math.PI)/1000;
@@ -85,7 +85,7 @@ conn.on('ready', function(data){
       });
     }
 
-    if (self.options.pushes){
+    if (options.pushes) {
       imu.on("change", function() {
         if (i < dataSize) {
           s.push(this.accelerometer.y);
