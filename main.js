@@ -65,7 +65,6 @@ conn.on('ready', function(data){
     var self = this;
     var distance = 0;
     var i = 0;
-    var diameter = self.options.wheelDiameter;
     var dataSize = 5;
     var s = new Stats();
     var posPushThreshold = 0.17;
@@ -78,6 +77,7 @@ conn.on('ready', function(data){
     });
 
     if (options.distance) {
+      var diameter = options.wheelDiameter;
       reedSwitch.on("change", function() {
         if (this.value == 1) {
           distance += ((diameter * Math.PI) / 1000) * 3.2808; //this gets the distance in mm, converts to m, then to feet
