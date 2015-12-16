@@ -49,14 +49,20 @@ conn.on('ready', function(data){
   });
 
   conn.on('config', function(error, deviceOptions){
-    conn.update({uuid: data.uuid, options: deviceOptions});
+    // conn.update({uuid: data.uuid, options: deviceOptions});
+    setOptions(device.options || {});
   });
+
+  var setOptions = function (options){
+    this.options = options || {};
+  }
 
   var board = new five.Board({
     port: "/dev/ttyMFD1"
   });
 
   board.on("ready", function() {
+    var self = this;
     var distance = 0;
     var i = 0;
     var dataSize = 5;
@@ -70,7 +76,7 @@ conn.on('ready', function(data){
       controller: "MPU6050"
     });
 
-    if (this.options.distance){
+    if (self.options.distance){
       reedSwitch.on("change", function() {
         if (this.value == 1) {
           distance += ((70)*Math.PI)/1000;
@@ -79,7 +85,7 @@ conn.on('ready', function(data){
       });
     }
 
-    if (this.options.pushes){
+    if (self.options.pushes){
       imu.on("change", function() {
         if (i < dataSize) {
           s.push(this.accelerometer.y);
