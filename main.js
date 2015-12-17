@@ -37,13 +37,6 @@ conn.on('ready', function(data){
     });
   }, 750);
 
-  var throttledMessage = _.throttle(function(payload){
-    conn.message({
-      "devices": "*",
-      "payload": payload
-    });
-  }, 200);
-
   conn.update({
     "uuid": uuid,
     "messageSchema": MESSAGE_SCHEMA
@@ -70,7 +63,12 @@ conn.on('ready', function(data){
     reedSwitch.on("change", function() {
       if (this.value == 1) {
         distance += ((70)*Math.PI)/1000;
-        throttledMessage({"distance": distance});
+        conn.message({
+          "devices": "*",
+          "payload": {
+            "distance": distance
+          }
+        });
       }
     });
 
