@@ -7,6 +7,15 @@ var Stats = require('fast-stats').Stats;
 var uuid    = meshbluJSON.uuid;
 var token   = meshbluJSON.token;
 
+var MESSAGE_SCHEMA = {
+  "type": 'object',
+  "properties": {
+    "wheelDiameter": {
+      "type": "integer"
+    }
+  }
+};
+
 var conn = meshblu.createConnection({
   "uuid": uuid,
   "token": token
@@ -30,6 +39,7 @@ conn.on('ready', function(data){
 
   conn.update({
     "uuid": uuid,
+    "messageSchema": MESSAGE_SCHEMA
   });
 
   conn.on('config', function(error, deviceOptions){
