@@ -35,7 +35,7 @@ conn.on('ready', function(data){
     distance: 0
   };
 
-  var incrementPush = function(){
+  var incrementPush = function(push){
     push ++;
   }
 
@@ -90,7 +90,7 @@ conn.on('ready', function(data){
         var diff = r[1] - r[0];
 
         if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
-          _.debounce(incrementPush, 750);
+          _.debounce(incrementPush(push), 750);
           skateData.pushes = push;
           sendSkateData(skateData);
           i = 0;
