@@ -7,6 +7,11 @@ var Stats = require('fast-stats').Stats;
 var uuid    = meshbluJSON.uuid;
 var token   = meshbluJSON.token;
 
+var conn = meshblu.createConnection({
+  "uuid": uuid,
+  "token": token
+});
+
 var MESSAGE_SCHEMA = {
   "type": 'object',
   "properties": {
@@ -15,11 +20,6 @@ var MESSAGE_SCHEMA = {
     }
   }
 };
-
-var conn = meshblu.createConnection({
-  "uuid": uuid,
-  "token": token
-});
 
 conn.on('notReady', function(data){
   console.log('UUID FAILED AUTHENTICATION!');
@@ -47,23 +47,22 @@ conn.on('ready', function(data){
   });
 
   board.on("ready", function() {
-    var self = this;
     var distance = 0;
     var i = 0;
     var dataSize = 5;
     var s = new Stats();
     var posPushThreshold = 0.17;
     var negPushThreshold = (-0.17);
-    var diameter = 70;
 
     var reedSwitch = new five.Sensor.Digital(12);
+
     var imu = new five.IMU({
       controller: "MPU6050"
     });
 
     reedSwitch.on("change", function() {
       if (this.value == 1) {
-        distance += ((diameter * Math.PI) / 1000);
+        distance += ((70)*Math.PI)/1000;
         debouncedMessage({"distance": distance});
       }
     });
