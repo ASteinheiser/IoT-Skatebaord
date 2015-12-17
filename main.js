@@ -88,7 +88,7 @@ conn.on('ready', function(data){
         if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
           push ++;
           skateData.pushes = push;
-          _.debounce(sendSkateData(skateData),500);
+          sendSkateData(skateData);
           i = 0;
           s.reset();
         }
