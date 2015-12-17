@@ -48,6 +48,7 @@ conn.on('ready', function(data){
 
   board.on("ready", function() {
     var distance = 0;
+    var push = 0;
     var i = 0;
     var dataSize = 5;
     var s = new Stats();
@@ -84,7 +85,8 @@ conn.on('ready', function(data){
         var diff = r[1] - r[0];
 
         if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
-          debouncedMessage({"push": true});
+          push ++;
+          debouncedMessage({"push": push});
           i = 0;
           s.reset();
         }
