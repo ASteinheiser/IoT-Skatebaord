@@ -86,9 +86,9 @@ conn.on('ready', function(data){
         var diff = r[1] - r[0];
 
         if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
-          _.debounce(push ++, 750);
+          push ++;
           skateData.pushes = push;
-          sendSkateData(skateData);
+          _.debounce(sendSkateData(skateData),500);
           i = 0;
           s.reset();
         }
