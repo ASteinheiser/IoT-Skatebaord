@@ -35,12 +35,9 @@ conn.on('ready', function(data){
     distance: 0
   };
 
-  var debouncedMessage = _.debounce(function(payload){
-    conn.message({
-      "devices": "*",
-      "payload": payload
-    });
-  }, 750);
+  var incrementPush = function(){
+    push ++;
+  }
 
   conn.update({
     "uuid": uuid,
@@ -93,7 +90,7 @@ conn.on('ready', function(data){
         var diff = r[1] - r[0];
 
         if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
-          push ++;
+          _.debounce(incrementPush, 750);
           skateData.pushes = push;
           sendSkateData(skateData);
           i = 0;
