@@ -61,7 +61,7 @@ conn.on('ready', function(data){
 
     reedSwitch.on("change", function() {
       if (this.value == 1) {
-        distance += ((diameter * Math.PI) / 1000) * 3.2808; //this gets the distance in mm, converts to m, then to feet
+        distance += ((diameter * Math.PI) / 1000);
         debouncedMessage({"distance(meters)": distance});
       }
     });
