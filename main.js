@@ -30,6 +30,11 @@ conn.on('ready', function(data){
   console.log('UUID AUTHENTICATED!');
   console.log(data);
 
+  var skateData = {
+    pushes: 0,
+    distance: 0
+  };
+
   var debouncedMessage = _.debounce(function(payload){
     conn.message({
       "devices": "*",
@@ -41,6 +46,13 @@ conn.on('ready', function(data){
     "uuid": uuid,
     "messageSchema": MESSAGE_SCHEMA
   });
+
+  var sendSkateData = function(skateData){
+    conn.message({
+      "devices": "*",
+      "payload": skateData
+    });
+  };
 
   var board = new five.Board({
     port: "/dev/ttyMFD1"
@@ -64,12 +76,8 @@ conn.on('ready', function(data){
     reedSwitch.on("change", function() {
       if (this.value == 1) {
         distance += ((70)*Math.PI)/1000;
-        conn.message({
-          "devices": "*",
-          "payload": {
-            "distance": distance
-          }
-        });
+        skateData.distance = distance;
+        sendSkateData(skateData);
       }
     });
 
@@ -86,7 +94,8 @@ conn.on('ready', function(data){
 
         if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
           push ++;
-          debouncedMessage({"push": push});
+          skateData.pushes = push;
+          sendSkateData(skateData);
           i = 0;
           s.reset();
         }
