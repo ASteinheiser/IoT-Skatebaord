@@ -42,14 +42,6 @@ conn.on('ready', function(data){
     "messageSchema": MESSAGE_SCHEMA
   });
 
-  conn.on('config', function(error, deviceOptions){
-    setOptions(deviceOptions || {});
-  });
-
-  var setOptions = function (options){
-    this.options = options || {};
-  }
-
   var board = new five.Board({
     port: "/dev/ttyMFD1"
   });
@@ -72,7 +64,7 @@ conn.on('ready', function(data){
     reedSwitch.on("change", function() {
       if (this.value == 1) {
         distance += ((diameter * Math.PI) / 1000);
-        debouncedMessage({"distance(meters)": distance});
+        debouncedMessage({"distance": distance});
       }
     });
 
