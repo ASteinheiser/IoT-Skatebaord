@@ -7,6 +7,14 @@ var Stats = require('fast-stats').Stats;
 var uuid    = meshbluJSON.uuid;
 var token   = meshbluJSON.token;
 
+var distance = 0;
+var push = 0;
+var i = 0;
+var dataSize = 5;
+var s = new Stats();
+var posPushThreshold = 0.17;
+var negPushThreshold = (-0.17);
+
 var conn = meshblu.createConnection({
   "uuid": uuid,
   "token": token
@@ -15,8 +23,9 @@ var conn = meshblu.createConnection({
 var MESSAGE_SCHEMA = {
   "type": 'object',
   "properties": {
-    "wheelDiameter": {
-      "type": "integer"
+    "reset": {
+      "type": "boolean",
+      "default": false
     }
   }
 };
@@ -47,18 +56,24 @@ conn.on('ready', function(data){
     });
   };
 
+  var resetData = function(){
+    distance = 0;
+    push = 0;
+    i = 0;
+    s.reset();
+  };
+
   var board = new five.Board({
     port: "/dev/ttyMFD1"
   });
 
   board.on("ready", function() {
-    var distance = 0;
-    var push = 0;
-    var i = 0;
-    var dataSize = 5;
-    var s = new Stats();
-    var posPushThreshold = 0.17;
-    var negPushThreshold = (-0.17);
+
+    conn.on('message', function(message){
+      if (message.payload.reset == true) {
+        resetData();
+      }
+    });
 
     var reedSwitch = new five.Sensor.Digital(12);
 
