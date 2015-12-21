@@ -82,8 +82,8 @@ conn.on('ready', function(data){
     port: "/dev/ttyMFD1"
   });
 
-  conn.on('config', function(device){
-    var wheelDiameter = device.options.wheelDiameter;
+  conn.on('config', function(){
+    var wheelDiameter = options.wheelDiameter;
   });
 
   board.on("ready", function() {
