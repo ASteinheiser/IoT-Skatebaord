@@ -82,11 +82,11 @@ conn.on('ready', function(data){
     port: "/dev/ttyMFD1"
   });
 
-  conn.on('config', function(options){
-    var wheelDiameter = options.wheelDiameter;
-  });
-
   board.on("ready", function() {
+    
+    conn.on('config', function(options){
+      var wheelDiameter = options.wheelDiameter;
+    });
 
     conn.on('message', function(message){
       if (message.payload.reset == true) {
