@@ -7,6 +7,7 @@ var Stats = require('fast-stats').Stats;
 var uuid    = meshbluJSON.uuid;
 var token   = meshbluJSON.token;
 
+var wheelDiameter = 0;
 var distance = 0;
 var push = 0;
 var i = 0;
@@ -48,9 +49,17 @@ conn.on('notReady', function(data){
   console.log(data);
 });
 
+conn.on('config', function(device){
+  wheelDiameter = device.options.wheelDiameter;
+});
+
 conn.on('ready', function(data){
   console.log('UUID AUTHENTICATED!');
   console.log(data);
+
+  conn.whoami({}, function(device){
+    wheelDiameter = device.options.wheelDiameter;
+  });
 
   var skateData = {
     pushes: 0,
@@ -83,10 +92,6 @@ conn.on('ready', function(data){
   });
 
   board.on("ready", function() {
-    
-    conn.on('config', function(options){
-      var wheelDiameter = options.wheelDiameter;
-    });
 
     conn.on('message', function(message){
       if (message.payload.reset == true) {
