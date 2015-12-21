@@ -57,6 +57,7 @@ conn.on('ready', function(data){
   };
 
   var resetData = function(){
+    skateData = {pushes: 0, distance: 0};
     distance = 0;
     push = 0;
     i = 0;
