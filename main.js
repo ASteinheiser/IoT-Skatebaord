@@ -12,6 +12,7 @@ var push = 0;
 var i = 0;
 var dataSize = 5;
 var s = new Stats();
+var savedSessions = [];
 var posPushThreshold = 0.17;
 var negPushThreshold = (-0.17);
 
@@ -21,11 +22,23 @@ var conn = meshblu.createConnection({
 });
 
 var MESSAGE_SCHEMA = {
-  "type": 'object',
+  "type": "object",
   "properties": {
     "reset": {
       "type": "boolean",
       "default": false
+    },
+    "savedSessions": {
+      "type": "array"
+    }
+  }
+};
+
+var OPTIONS_SCHEMA = {
+  "type": "object",
+  "properties": {
+    "wheelDiameter": {
+      "type": "integer"
     }
   }
 };
@@ -46,7 +59,8 @@ conn.on('ready', function(data){
 
   conn.update({
     "uuid": uuid,
-    "messageSchema": MESSAGE_SCHEMA
+    "messageSchema": MESSAGE_SCHEMA,
+    "optionsSchema": OPTIONS_SCHEMA
   });
 
   var sendSkateData = function(skateData){
@@ -64,8 +78,16 @@ conn.on('ready', function(data){
     s.reset();
   };
 
+  var setOptions = function (options){
+    this.options = options || {};
+  }
+
   var board = new five.Board({
     port: "/dev/ttyMFD1"
+  });
+
+  conn.on('config', function(device){
+    setOptions(device.options || {});
   });
 
   board.on("ready", function() {
@@ -74,6 +96,7 @@ conn.on('ready', function(data){
       if (message.payload.reset == true) {
         resetData();
       }
+      savedSessions = message.payload.savedSessions;
     });
 
     var reedSwitch = new five.Sensor.Digital(12);
@@ -84,7 +107,7 @@ conn.on('ready', function(data){
 
     reedSwitch.on("change", function() {
       if (this.value == 1) {
-        distance += ((70)*Math.PI)/1000;
+        distance += ((options.wheelDiameter)*Math.PI)/1000;
         skateData.distance = distance;
         sendSkateData(skateData);
       }
