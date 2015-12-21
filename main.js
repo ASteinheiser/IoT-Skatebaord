@@ -80,6 +80,7 @@ conn.on('ready', function(data){
 
   var setOptions = function (options){
     this.options = options || {};
+    var wheelDiameter = options.wheelDiameter;
   }
 
   var board = new five.Board({
@@ -107,7 +108,7 @@ conn.on('ready', function(data){
 
     reedSwitch.on("change", function() {
       if (this.value == 1) {
-        distance += ((options.wheelDiameter)*Math.PI)/1000;
+        distance += (wheelDiameter*Math.PI)/1000;
         skateData.distance = distance;
         sendSkateData(skateData);
       }
