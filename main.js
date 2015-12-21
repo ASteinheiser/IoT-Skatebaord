@@ -78,17 +78,12 @@ conn.on('ready', function(data){
     s.reset();
   };
 
-  var setOptions = function (options){
-    this.options = options || {};
-    var wheelDiameter = options.wheelDiameter;
-  }
-
   var board = new five.Board({
     port: "/dev/ttyMFD1"
   });
 
   conn.on('config', function(device){
-    setOptions(device.options || {});
+    var wheelDiameter = device.options.wheelDiameter;
   });
 
   board.on("ready", function() {
