@@ -30,7 +30,21 @@ var MESSAGE_SCHEMA = {
       "default": false
     },
     "savedSessions": {
-      "type": "object"
+      "type": "array"
+      "items": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "integer"
+          },
+          "distance": {
+            "type": "integer"
+          },
+          "pushes": {
+            "type": "integer"
+          }
+        }
+      }
     }
   }
 };
