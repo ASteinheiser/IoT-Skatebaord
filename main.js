@@ -11,7 +11,7 @@ var board = new five.Board({
   port: "/dev/ttyMFD1"
 });
 
-var push, distance, wheelDiameter, i = 0;
+var push = 0, distance = 0, wheelDiameter = 0, i = 0;
 var dataSize = 5;
 var s = new Stats();
 var savedSessions = {};
