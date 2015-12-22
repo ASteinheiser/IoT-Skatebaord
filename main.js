@@ -7,15 +7,36 @@ var Stats = require('fast-stats').Stats;
 var uuid    = meshbluJSON.uuid;
 var token   = meshbluJSON.token;
 
-var wheelDiameter = 0;
-var distance = 0;
-var push = 0;
-var i = 0;
+var board = new five.Board({
+  port: "/dev/ttyMFD1"
+});
+
+var push, distance, wheelDiameter, i = 0;
 var dataSize = 5;
 var s = new Stats();
 var savedSessions = {};
 var posPushThreshold = 0.17;
 var negPushThreshold = (-0.17);
+
+var skateData = {
+  pushes: 0,
+  distance: 0
+};
+
+var sendSkateData = function(skateData){
+  conn.message({
+    "devices": "*",
+    "payload": skateData
+  });
+};
+
+var resetData = function(){
+  skateData = {pushes: 0, distance: 0};
+  distance = 0;
+  push = 0;
+  i = 0;
+  s.reset();
+};
 
 var conn = meshblu.createConnection({
   "uuid": uuid,
@@ -75,49 +96,22 @@ conn.on('ready', function(data){
     wheelDiameter = device.options.wheelDiameter;
   });
 
-  var skateData = {
-    pushes: 0,
-    distance: 0
-  };
-
   conn.update({
     "uuid": uuid,
     "messageSchema": MESSAGE_SCHEMA,
     "optionsSchema": OPTIONS_SCHEMA
   });
 
-  var sendSkateData = function(skateData){
-    conn.message({
-      "devices": "*",
-      "payload": skateData
-    });
-  };
-
-  var resetData = function(){
-    skateData = {pushes: 0, distance: 0};
-    distance = 0;
-    push = 0;
-    i = 0;
-    s.reset();
-  };
-
-  var board = new five.Board({
-    port: "/dev/ttyMFD1"
-  });
-
   board.on("ready", function() {
+
+    var reedSwitch = new five.Sensor.Digital(12);
+    var imu = new five.IMU({controller: "MPU6050"});
 
     conn.on('message', function(message){
       if (message.payload.reset == true) {
         resetData();
       }
       savedSessions = message.payload.savedSessions;
-    });
-
-    var reedSwitch = new five.Sensor.Digital(12);
-
-    var imu = new five.IMU({
-      controller: "MPU6050"
     });
 
     reedSwitch.on("change", function() {
