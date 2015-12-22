@@ -30,7 +30,7 @@ var MESSAGE_SCHEMA = {
       "default": false
     },
     "savedSessions": {
-      "type": "array"
+      "type": "array",
       "items": {
         "type": "object",
         "properties": {
