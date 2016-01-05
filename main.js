@@ -112,8 +112,8 @@ conn.on('ready', function(data){
         resetData();
       }
       savedSessions.push(message.payload.savedSessions[0]);
-      console.log(savedSessions);
-      console.log(message.payload.savedSessions[0]);
+      console.log("savedSessions:" + savedSessions);
+      console.log("savedSessions[0]" + message.payload.savedSessions[0]);
     });
 
     reedSwitch.on("change", function() {
