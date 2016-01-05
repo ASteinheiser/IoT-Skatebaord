@@ -14,7 +14,7 @@ var board = new five.Board({
 var push = 0, distance = 0, wheelDiameter = 0, i = 0;
 var dataSize = 5;
 var s = new Stats();
-var savedSessions = {};
+var savedSessions = [];
 var posPushThreshold = 0.17;
 var negPushThreshold = (-0.17);
 
@@ -111,7 +111,8 @@ conn.on('ready', function(data){
       if (message.payload.reset == true) {
         resetData();
       }
-      savedSessions = message.payload.savedSessions;
+      savedSessions.push(message.payload.savedSessions);
+      console.log(savedSessions);
     });
 
     reedSwitch.on("change", function() {
