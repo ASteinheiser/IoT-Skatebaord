@@ -50,6 +50,10 @@ var MESSAGE_SCHEMA = {
       "type": "boolean",
       "default": false
     },
+    "save": {
+      "type": "boolean",
+      "default": false
+    },
     "savedSessions": {
       "type": "array",
       "items": {
@@ -111,9 +115,10 @@ conn.on('ready', function(data){
       if (message.payload.reset == true) {
         resetData();
       }
-      savedSessions.push(message.payload.savedSessions[0]);
-      console.log("savedSessions:" + savedSessions);
-      console.log("savedSessions[0]" + message.payload.savedSessions[0]);
+      if (message.payload.save == true) {
+        savedSessions.push(message.payload.savedSessions[0]);
+        sendSkateData(savedSessions);
+      }
     });
 
     reedSwitch.on("change", function() {
