@@ -56,13 +56,13 @@ var MESSAGE_SCHEMA = {
         "type": "object",
         "properties": {
           "session": {
-            "type": "integer"
+            "type": "string"
           },
           "distance": {
-            "type": "integer"
+            "type": "string"
           },
           "pushes": {
-            "type": "integer"
+            "type": "string"
           }
         }
       }
