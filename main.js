@@ -111,9 +111,9 @@ conn.on('ready', function(data){
       if (message.payload.reset == true) {
         resetData();
       }
-      savedSessions.push(message.payload.savedSessions);
+      savedSessions.push(message.payload.savedSessions[0]);
       console.log(savedSessions);
-      console.log(message.payload.savedSessions);
+      console.log(message.payload.savedSessions[0]);
     });
 
     reedSwitch.on("change", function() {
