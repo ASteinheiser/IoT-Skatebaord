@@ -92,6 +92,12 @@ conn.on('config', function(device){
   wheelDiameter = device.options.wheelDiameter;
 });
 
+// function updateSession(data) {
+//   Get savedSessions from device & store it in a local variable $sessionData
+//   $sessionData.push(data)
+//   Updata device property called savedSessions
+// }
+
 conn.on('ready', function(data){
   console.log('UUID AUTHENTICATED!');
   console.log(data);
@@ -121,6 +127,10 @@ conn.on('ready', function(data){
         conn.message({
           "devices": "*",
           "payload": savedSessions
+        });
+
+        conn.update({
+          "savedSessions": savedSessions
         });
 
         resetData();
