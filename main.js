@@ -113,6 +113,7 @@ conn.on('ready', function(data){
       }
       savedSessions.push(message.payload.savedSessions);
       console.log(savedSessions);
+      console.log(message.payload.savedSessions);
     });
 
     reedSwitch.on("change", function() {
