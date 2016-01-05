@@ -118,6 +118,7 @@ conn.on('ready', function(data){
       if (message.payload.save == true) {
         savedSessions.push(message.payload.savedSessions[0]);
         sendSkateData(savedSessions);
+        resetData();
       }
     });
 
