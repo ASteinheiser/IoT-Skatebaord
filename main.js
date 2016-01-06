@@ -14,6 +14,7 @@ var board = new five.Board({
 var push = 0, distance = 0, wheelDiameter = 0, i = 0;
 var dataSize = 5;
 var s = new Stats();
+var $sessionData = [];
 var savedSessions = [];
 var posPushThreshold = 0.17;
 var negPushThreshold = (-0.17);
@@ -23,14 +24,19 @@ var skateData = {
   distance: 0
 };
 
-var sendSkateData = function(skateData){
+function sendMessage(message){
   conn.message({
     "devices": "*",
-    "payload": skateData
+    "payload": message
   });
 };
 
-var resetData = function(){
+function updateSession(data) {
+  sendMessage(data);
+  conn.update({"savedSessions": data});
+};
+
+function resetData(){
   skateData = {pushes: 0, distance: 0};
   distance = 0;
   push = 0;
@@ -92,18 +98,13 @@ conn.on('config', function(device){
   wheelDiameter = device.options.wheelDiameter;
 });
 
-// function updateSession(data) {
-//   Get savedSessions from device & store it in a local variable $sessionData
-//   $sessionData.push(data)
-//   Updata device property called savedSessions
-// }
-
 conn.on('ready', function(data){
   console.log('UUID AUTHENTICATED!');
   console.log(data);
 
   conn.whoami({}, function(device){
     wheelDiameter = device.options.wheelDiameter;
+    savedSessions = device.savedSessions;
   });
 
   conn.update({
@@ -124,15 +125,7 @@ conn.on('ready', function(data){
       if (message.payload.save == true) {
         savedSessions.push(message.payload.savedSessions[0]);
 
-        conn.message({
-          "devices": "*",
-          "payload": savedSessions
-        });
-
-        conn.update({
-          "savedSessions": savedSessions
-        });
-
+        updateSession(savedSessions);
         resetData();
       }
     });
@@ -141,7 +134,7 @@ conn.on('ready', function(data){
       if (this.value == 1) {
         distance += (wheelDiameter*Math.PI)/1000;
         skateData.distance = distance;
-        sendSkateData(skateData);
+        sendMessage(skateData);
       }
     });
 
@@ -159,7 +152,7 @@ conn.on('ready', function(data){
         if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
           push ++;
           skateData.pushes = push;
-          sendSkateData(skateData);
+          sendMessage(skateData);
           i = 0;
           s.reset();
         }
