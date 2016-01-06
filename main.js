@@ -14,7 +14,6 @@ var board = new five.Board({
 var push = 0, distance = 0, wheelDiameter = 0, i = 0;
 var dataSize = 5;
 var s = new Stats();
-var $sessionData = [];
 var savedSessions = [];
 var posPushThreshold = 0.17;
 var negPushThreshold = (-0.17);
@@ -44,6 +43,11 @@ function resetData(){
   s.reset();
 };
 
+function resetSessions(){
+  savedSessions = [];
+  updateSession(savedSessions);
+};
+
 var conn = meshblu.createConnection({
   "uuid": uuid,
   "token": token
@@ -53,6 +57,10 @@ var MESSAGE_SCHEMA = {
   "type": "object",
   "properties": {
     "reset": {
+      "type": "boolean",
+      "default": false
+    },
+    "resetSessions": {
       "type": "boolean",
       "default": false
     },
@@ -127,6 +135,9 @@ conn.on('ready', function(data){
 
         updateSession(savedSessions);
         resetData();
+      }
+      if (message.payload.resetSessions == true) {
+        resetSessions();
       }
     });
 
