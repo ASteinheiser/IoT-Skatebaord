@@ -7,13 +7,13 @@ var Stats = require('fast-stats').Stats;
 var uuid    = meshbluJSON.uuid;
 var token   = meshbluJSON.token;
 
-var board = new five.Board({
+var edison = new five.Board({
   port: "/dev/ttyMFD1"
 });
 
-var push = 0, distance = 0, wheelDiameter = 0, i = 0;
-var dataSize = 5;
-var s = new Stats();
+var push = 0, distance = 0, wheelDiameter = 0, index = 0;
+var sampleSize = 5;
+var sample = new Stats();
 var savedSessions = [];
 var posPushThreshold = 0.17;
 var negPushThreshold = (-0.17);
@@ -39,8 +39,8 @@ function resetData(){
   skateData = {pushes: 0, distance: 0};
   distance = 0;
   push = 0;
-  i = 0;
-  s.reset();
+  index = 0;
+  sample.reset();
 };
 
 function resetSessions(){
@@ -121,10 +121,10 @@ conn.on('ready', function(data){
     "optionsSchema": OPTIONS_SCHEMA
   });
 
-  board.on("ready", function() {
+  edison.on("ready", function() {
 
     var reedSwitch = new five.Sensor.Digital(12);
-    var imu = new five.IMU({controller: "MPU6050"});
+    var accelerometer = new five.IMU({controller: "MPU6050"});
 
     conn.on('message', function(message){
       if (message.payload.reset == true) {
@@ -149,23 +149,22 @@ conn.on('ready', function(data){
       }
     });
 
-    imu.on("change", function() {
-      if (i < dataSize) {
-        s.push(this.accelerometer.y);
-        i ++;
+    accelerometer.on("change", function() {
+      if (index < sampleSize) {
+        sample.push(this.accelerometer.y);
+        index ++;
       } else {
-        s.shift();
-        s.push(this.accelerometer.y);
+        sample.shift();
+        sample.push(this.accelerometer.y);
 
-        var r = s.range();
-        var diff = r[1] - r[0];
+        var range = sample.range();
 
-        if (r[1] > posPushThreshold && r[0] < negPushThreshold) {
+        if (range[1] > posPushThreshold && range[0] < negPushThreshold) {
           push ++;
           skateData.pushes = push;
           sendMessage(skateData);
-          i = 0;
-          s.reset();
+          index = 0;
+          sample.reset();
         }
       }
     });
