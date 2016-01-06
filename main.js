@@ -128,6 +128,7 @@ conn.on('ready', function(data){
 
     conn.on('message', function(message){
       if (message.payload.reset == true) {
+        console.log("resetting!!");
         resetData();
       }
       if (message.payload.save == true) {
