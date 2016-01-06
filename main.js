@@ -127,7 +127,7 @@ conn.on('ready', function(data){
     var accelerometer = new five.IMU({controller: "MPU6050"});
 
     conn.on('message', function(message){
-      if (message.payload.reset == true) {
+      if (message.reset == true) {
         console.log("resetting!!");
         resetData();
       }
