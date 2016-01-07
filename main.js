@@ -56,10 +56,10 @@ var conn = meshblu.createConnection({
 var MESSAGE_SCHEMA = {
   "type": "object",
   "properties": {
-    // "reset": {
-    //   "type": "boolean",
-    //   "default": false
-    // },
+    "reset": {
+      "type": "boolean",
+      "default": false
+    },
     "resetSessions": {
       "type": "boolean",
       "default": false
