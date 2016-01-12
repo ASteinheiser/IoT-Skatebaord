@@ -14,7 +14,6 @@ var edison = new five.Board({
 var push = 0, distance = 0, wheelDiameter = 0, index = 0;
 var sampleSize = 5;
 var sample = new Stats();
-var savedSessions = [];
 var posPushThreshold = 0.17;
 var negPushThreshold = (-0.17);
 
@@ -28,11 +27,6 @@ function sendMessage(message){
     "devices": "*",
     "payload": message
   });
-};
-
-function updateSession(data) {
-  sendMessage(data);
-  conn.update({"savedSessions": data});
 };
 
 function resetData(){
@@ -59,31 +53,6 @@ var MESSAGE_SCHEMA = {
     "reset": {
       "type": "boolean",
       "default": false
-    },
-    "resetSessions": {
-      "type": "boolean",
-      "default": false
-    },
-    "save": {
-      "type": "boolean",
-      "default": false
-    },
-    "savedSessions": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "session": {
-            "type": "string"
-          },
-          "distance": {
-            "type": "string"
-          },
-          "pushes": {
-            "type": "string"
-          }
-        }
-      }
     }
   }
 };
@@ -112,7 +81,6 @@ conn.on('ready', function(data){
 
   conn.whoami({}, function(device){
     wheelDiameter = device.options.wheelDiameter;
-    savedSessions = device.savedSessions;
   });
 
   conn.update({
@@ -127,18 +95,8 @@ conn.on('ready', function(data){
     var accelerometer = new five.IMU({controller: "MPU6050"});
 
     conn.on('message', function(message){
-      console.log(message);
       if (message.payload.reset == true) {
         resetData();
-      }
-      if (message.payload.save == true) {
-        savedSessions.push(message.payload.savedSessions[0]);
-
-        updateSession(savedSessions);
-        resetData();
-      }
-      if (message.payload.resetSessions == true) {
-        resetSessions();
       }
     });
 
