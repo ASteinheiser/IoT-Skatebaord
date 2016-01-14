@@ -119,6 +119,7 @@ conn.on('ready', function(data){
           push ++;
           skateData.pushes = push;
           sendMessage(skateData);
+          console.log(skateData);
           index = 0;
           sample.reset();
         }
