@@ -24,7 +24,7 @@ var skateData = {
 
 function sendMessage(message){
   conn.message({
-    "devices": "*",
+    "devices": ["*"],
     "payload": message
   });
 };
