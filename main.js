@@ -4,8 +4,8 @@ var five = require("johnny-five");
 var _ = require('lodash');
 var Stats = require('fast-stats').Stats;
 
-var uuid    = meshbluJSON.uuid;
-var token   = meshbluJSON.token;
+var uuid = meshbluJSON.uuid;
+var token = meshbluJSON.token;
 
 var edison = new five.Board({
   port: "/dev/ttyMFD1"
@@ -35,11 +35,6 @@ function resetData(){
   push = 0;
   index = 0;
   sample.reset();
-};
-
-function resetSessions(){
-  savedSessions = [];
-  updateSession(savedSessions);
 };
 
 var conn = meshblu.createConnection({
