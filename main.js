@@ -61,8 +61,8 @@ conn.on('ready', function(data){
 
   conn.update({
     "uuid": uuid,
-    "messageSchema": MESSAGE_SCHEMA,
-    "optionsSchema": OPTIONS_SCHEMA,
+    // "messageSchema": MESSAGE_SCHEMA,
+    // "optionsSchema": OPTIONS_SCHEMA,
     "type": "device:iot-skateboard",
     "logoUrl": "https://s3-us-west-2.amazonaws.com/octoblu-icons/device/iot-skateboard.svg"
   });
