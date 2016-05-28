@@ -84,15 +84,15 @@ conn.on('ready', function(data){
     })
 
     zAccel.on("change", function() {
-      _.throttle(functionLog("Z accelerometer: " + this.value), 500)
+      _.throttle(this.functionLog("Z accelerometer: " + this.value), 500)
     })
 
     yAccel.on("change", function() {
-      _.throttle(functionLog("Y accelerometer: " + this.value), 500)
+      _.throttle(this.functionLog("Y accelerometer: " + this.value), 500)
     })
 
     xAccel.on("change", function() {
-      _.throttle(functionLog("X accelerometer: " + this.value), 500)
+      _.throttle(this.functionLog("X accelerometer: " + this.value), 500)
     })
   })
 })
