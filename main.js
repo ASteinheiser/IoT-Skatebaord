@@ -50,8 +50,7 @@ conn.on('config', function(device){
 })
 
 conn.on('ready', function(data){
-  console.log('UUID AUTHENTICATED!')
-  console.log(data)
+  console.log('UUID AUTHENTICATED!', data)
   sendMessage('Device Ready')
 
   conn.whoami({}, function(device){
@@ -78,20 +77,17 @@ conn.on('ready', function(data){
       // }
     })
 
-    function functionLog(message){
-      console.log(message)
-    }
-
     zAccel.on("change", function() {
-      setTimeout(functionLog("Z accelerometer: " + this.value), 1000)
+      setTimeout(console.log("Z accelerometer: " + this.value), 1000)
     })
 
     yAccel.on("change", function() {
-      setTimeout(functionLog("Y accelerometer: " + this.value), 1000)
+      setTimeout(console.log("Y accelerometer: " + this.value), 1000)
+      setTimeout(sendMessage({'Y': this.value}), 1000)
     })
 
     xAccel.on("change", function() {
-      setTimeout(functionLog("X accelerometer: " + this.value), 1000)
+      setTimeout(console.log("X accelerometer: " + this.value), 1000)
     })
   })
 })
