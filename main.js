@@ -29,7 +29,7 @@ function sendMessage(message){
   })
 }
 
-function log(message){
+function functionLog(message){
   console.log(message)
 }
 
@@ -84,15 +84,15 @@ conn.on('ready', function(data){
     })
 
     zAccel.on("change", function() {
-      _.throttle(log("Z accelerometer: " + this.value), 500)
+      _.throttle(functionLog("Z accelerometer: " + this.value), 500)
     })
 
     yAccel.on("change", function() {
-      _.throttle(log("Y accelerometer: " + this.value), 500)
+      _.throttle(functionLog("Y accelerometer: " + this.value), 500)
     })
 
     xAccel.on("change", function() {
-      _.throttle(log("X accelerometer: " + this.value), 500)
+      _.throttle(functionLog("X accelerometer: " + this.value), 500)
     })
   })
 })
