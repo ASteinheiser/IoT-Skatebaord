@@ -3,6 +3,8 @@ var meshbluJSON = require('./meshblu.json')
 var five = require("johnny-five")
 var _ = require("lodash")
 
+var self = this;
+
 // var MESSAGE_SCHEMA = {
 //   "type": "object",
 //   "properties": {
@@ -84,15 +86,15 @@ conn.on('ready', function(data){
     })
 
     zAccel.on("change", function() {
-      _.throttle(this.functionLog("Z accelerometer: " + this.value), 500)
+      _.throttle(self.functionLog("Z accelerometer: " + this.value), 500)
     })
 
     yAccel.on("change", function() {
-      _.throttle(this.functionLog("Y accelerometer: " + this.value), 500)
+      _.throttle(self.functionLog("Y accelerometer: " + this.value), 500)
     })
 
     xAccel.on("change", function() {
-      _.throttle(this.functionLog("X accelerometer: " + this.value), 500)
+      _.throttle(self.functionLog("X accelerometer: " + this.value), 500)
     })
   })
 })
