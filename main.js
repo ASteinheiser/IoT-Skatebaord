@@ -33,7 +33,8 @@ var edison = new five.Board({
   port: "/dev/ttyMFD1"
 });
 
-var { uuid, token } = meshbluJSON;
+var uuid = meshbluJSON.uuid;
+var token = meshbluJSON.token;
 
 var conn = meshblu.createConnection({
   "uuid": uuid,
