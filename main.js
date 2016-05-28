@@ -3,8 +3,6 @@ var meshbluJSON = require('./meshblu.json')
 var five = require("johnny-five")
 var _ = require("lodash")
 
-var self = this;
-
 // var MESSAGE_SCHEMA = {
 //   "type": "object",
 //   "properties": {
@@ -29,10 +27,6 @@ function sendMessage(message){
     "devices": ["*"],
     "payload": message
   })
-}
-
-function functionLog(message){
-  console.log(message)
 }
 
 var edison = new five.Board({
@@ -84,6 +78,10 @@ conn.on('ready', function(data){
       //   console.log('reset')
       // }
     })
+
+    function functionLog(message){
+      console.log(message)
+    }
 
     zAccel.on("change", function() {
       _.throttle(self.functionLog("Z accelerometer: " + this.value), 500)
