@@ -65,6 +65,7 @@ conn.on('ready', function(data){
   })
 
   edison.on("ready", function() {
+    console.log('edison ready')
 
     var zAccel = new five.Sensor.Analog(0)
     var yAccel = new five.Sensor.Analog(6)
