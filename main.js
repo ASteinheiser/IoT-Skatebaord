@@ -42,16 +42,15 @@ var conn = meshblu.createConnection({
 
 conn.on('notReady', function(data){
   console.log('UUID FAILED AUTHENTICATION!', data)
-  sendMessage("UUID FAILED AUTH: ", data)
 })
 
 conn.on('config', function(device){
+  console.log('Configuring')
   // wheelDiameter = device.options.wheelDiameter
 })
 
 conn.on('ready', function(data){
   console.log('UUID AUTHENTICATED!', data)
-  sendMessage('Device Ready')
 
   conn.whoami({}, function(device){
     // wheelDiameter = device.options.wheelDiameter
@@ -82,6 +81,7 @@ conn.on('ready', function(data){
     })
 
     yAccel.on("change", function() {
+      console.log(this.value)
       setTimeout(console.log("Y accelerometer: " + this.value), 1000)
       setTimeout(sendMessage({'Y': this.value}), 1000)
     })
